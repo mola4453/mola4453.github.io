@@ -59,9 +59,12 @@ io.on('connection', (socket) => {
 });
 
 function startNextRound() {
-    clearTimeout(timer);
+    io.emit('broadcast', `currentWord ->${currentWord}`);
+
     if (players.length <= 1) return;
+    clearTimeout(timer);
     const currentPlayer = players[currentPlayerIndex];
+    io.to(currentPlayer.id).emit('requestCurrentWord');
     io.emit('startRound', currentPlayer.id);
     io.emit('updatePlayers', { players, currentPlayer: currentPlayer.id });
     io.to(currentPlayer.id).emit('receiveMessage',{nickname: '系統',message:`${currentPlayer.nickname}, 你的回合開始了!`});
@@ -80,3 +83,4 @@ function startNextRound() {
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+

@@ -7,7 +7,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="scoreboard" style="display: none;">
+    <div id="inputGuessWord" style="display: none;">
+        <label for="guessWordInput">請輸入你的題目:</label>
+        <input type="text" id="guessWordInput">
+        <button id="submitWordButton">提交</button>
+    </div>
+    
+    <div id="scoreboard" style = "display: none;">
         <h2>Scoreboard</h2>
         <ul id="playerList"></ul>
     </div>

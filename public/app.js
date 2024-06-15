@@ -13,6 +13,9 @@ const chatContainer = document.getElementById('chatContainer');
 const timer = document.getElementById('timer');
 const timerElement = document.getElementById('timerTime');
 const scoreBoard = document.getElementById("scoreboard");
+const inputGuessWord = document.getElementById("inputGuessWord");
+const submitWordButton = document.getElementById("submitWordButton");
+
 canvas.width = 800;
 canvas.height = 600;
 
@@ -90,6 +93,8 @@ socket.on('startRound', (currentPlayerId) => {
     isMyTurn = currentPlayerId === socket.id;
 });
 
+
+
 socket.on('receiveMessage', (data) => {
     const { nickname, message } = data;
     const messageElement = document.createElement('div');
@@ -118,3 +123,5 @@ socket.on('updatePlayers', (data) => {
         return `<li>${player.nickname}${isCurrent} - ${player.score} points</li>`;
     }).join('');
 });
+
+inputGuessWord.addEventListener('')
