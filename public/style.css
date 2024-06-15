@@ -13,10 +13,73 @@ body {
     align-items: center;
 }
 
+#nicknameForm {
+    margin-bottom: 20px;
+}
+
+#playerList {
+    margin-bottom: 10px;
+    list-style-type: none;
+    padding: 0;
+}
+
 #drawingCanvas {
     border: 1px solid #000;
 }
 
 #controls {
     margin-top: 10px;
+}
+
+#chatContainer {
+    margin-top: 10px;
+}
+
+#chatBox {
+    width: 100%;
+    height: 150px;
+    border: 1px solid #000;
+    overflow-y: scroll;
+    padding: 5px;
+}
+
+#chatForm {
+    display: flex;
+    margin-top: 5px;
+}
+
+#chatInput {
+    flex: 1;
+    padding: 5px;
+}
+
+#chatForm button {
+    padding: 5px;
+}
+#timer {
+    font-size: 2em;
+    margin-top: 10px;
+}
+body {
+    display: flex;
+}
+
+#scoreboard {
+    width: 200px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-right: 1px solid #ddd;
+}
+
+#scoreboard h2 {
+    text-align: center;
+}
+#playerList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#playerList li {
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
 }

@@ -3,20 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>多人你画我猜</title>
+    <title>你畫我猜</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="scoreboard" style="display: none;">
+        <h2>Scoreboard</h2>
+        <ul id="playerList"></ul>
+    </div>
+
     <div id="game-container">
-        <canvas id="drawingCanvas"></canvas>
-        <div id="controls">
-            <label for="colorPicker">颜色:</label>
+        <form id="nicknameForm">
+            <label for="nicknameInput">輸入你的暱稱:</label>
+            <input type="text" id="nicknameInput" required>
+            <button type="submit">開始遊戲!</button>
+        </form>
+   <!-- .     <ul id="playerList"></ul> -->
+        <canvas id="drawingCanvas" style="display: none;"></canvas>
+        <div id="controls" style="display: none;">
+            <label for="colorPicker">顏色:</label>
             <input type="color" id="colorPicker" value="#000000">
-            <label for="brushSize">笔刷大小:</label>
+            <label for="brushSize">筆刷大小:</label>
             <input type="range" id="brushSize" min="1" max="50" value="5">
-            <button onclick="clearCanvas()">清除画布</button>
+            <button onclick="clearCanvas()">清除畫布</button>
+        </div>
+        <div id="chatContainer" style="display: none;">
+            <div id="chatBox" style="height: 150px; overflow-y: scroll; border: 1px solid #000; padding: 5px;"></div>
+            <form id="chatForm">
+                <input type="text" id="chatInput" placeholder="輸入你的猜測" required>
+                <button type="submit">發送</button>
+            </form>
         </div>
     </div>
+    <div id="timer" style="display: none;">
+        Timer: <span id = 'timerTime'></span> 
+    </div> 
     <script src="/socket.io/socket.io.js"></script>
     <script src="./app.js"></script>
 </body>
