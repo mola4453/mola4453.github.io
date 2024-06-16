@@ -19,6 +19,7 @@ body {
     max-width: 800px;
     width: 100%;
     position: relative;
+    overflow-y: auto; /* 添加垂直滚动 */
 }
 
 #nicknameForm {
