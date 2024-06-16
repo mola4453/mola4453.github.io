@@ -12,17 +12,34 @@ const controls = document.getElementById('controls');
 const chatContainer = document.getElementById('chatContainer');
 const timer = document.getElementById('timer');
 const timerElement = document.getElementById('timerTime');
-const scoreBoard = document.getElementById("scoreboard");
-const inputGuessWord = document.getElementById("inputGuessWord");
-const submitWordButton = document.getElementById("submitWordButton");
+const scoreBoard = document.getElementById('scoreboard');
+const inputGuessWord = document.getElementById('inputGuessWord');
+const guessWordInput = document.getElementById('guessWordInput');
+const submitWordButton = document.getElementById('submitWordButton');
 
 canvas.width = 800;
 canvas.height = 600;
 
 let drawing = false;
 let isMyTurn = false;
+let answered = false;
+let socketId;
+let currentPlayerId;
 
 const socket = io();
+
+socket.on('setSocketId',(socketId_)=>{socketId = socketId_;});
+
+socket.on('correctAnswer',()=>{answered = true;});
+
+submitWordButton.addEventListener('click',()=>{
+    let Word = guessWordInput.value;
+    if(Word){
+    socket.emit('setWord',Word);
+    inputGuessWord.style.display = 'none';
+    guessWordInput.value = '';
+    }
+});
 
 nicknameForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -46,7 +63,11 @@ function enterDrawPhase()
 chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const message = chatInput.value;
-    if (message) {
+    if(socketId === currentPlayerId){
+        displayMessage('你就是出題者，不能自問自答!');
+    }else if(answered){
+        displayMessage('你已經回答過這題了!');
+    }else if (message) {
         socket.emit('sendMessage', message);
         chatInput.value = '';
     }
@@ -89,11 +110,14 @@ socket.on('drawing', (data) => {
     context.moveTo(data.x, data.y);
 });
 
-socket.on('startRound', (currentPlayerId) => {
+
+socket.on('startRound', (currentPlayerId_) => {
+    currentPlayerId = currentPlayerId_;
     isMyTurn = currentPlayerId === socket.id;
+    answered = false;
+    if(isMyTurn) inputGuessWord.style.display = 'block';
+    else inputGuessWord.style.display = 'none';
 });
-
-
 
 socket.on('receiveMessage', (data) => {
     const { nickname, message } = data;
@@ -119,9 +143,19 @@ socket.on('updateTimer', (remainingTime)=>{
 socket.on('updatePlayers', (data) => {
     const { players, currentPlayer } = data;
     playerList.innerHTML = players.map(player => {
-        const isCurrent = player.id === currentPlayer ? ' (Current)' : '';
-        return `<li>${player.nickname}${isCurrent} - ${player.score} points</li>`;
+        const isCurrent = player.id === currentPlayer ? ' (當前)' : '';
+        return `<li>${player.nickname}${isCurrent} - ${player.score} 點</li>`;
     }).join('');
 });
 
-inputGuessWord.addEventListener('')
+socket.on('broadcast', (message)=>{
+    displayMessage(message);
+});
+
+function displayMessage(message)
+{
+    const messageElement = document.createElement('div');
+    messageElement.textContent = message;
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}

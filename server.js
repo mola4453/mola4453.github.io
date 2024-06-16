@@ -14,6 +14,7 @@ let roundTime = 60; // 每轮60秒
 let timer;
 let currentWord = 'banana';
 let inRound = false;
+let remainingTime = roundTime-1;
 
 app.use(express.static('public'));
 
@@ -23,22 +24,24 @@ io.on('connection', (socket) => {
     socket.on('setNickname', (nickname) => {
         players.push({ id: socket.id, nickname , score: 0});
         io.emit('updatePlayers', { players, currentPlayer: players[currentPlayerIndex] ? players[currentPlayerIndex].id : null });
-        if (players.length === 2) {
+        if (players.length === 1) {
             startNextRound();
         }
+        io.to(socket.id).emit('setSocketId',socket.id);
     });
 
+    socket.on('setWord',(Word)=>{
+        currentWord = Word;
+    });
     socket.on('sendMessage', (message) => {
         const player = players.find(p => p.id === socket.id);
         if (player) {
-            if(message.toLowerCase() === currentWord.toLowerCase())
-                {
-                    let score = 10;
-                    player.score += score;
-                    io.emit('receiveMessage', { nickname: player.nickname, message: '正確答案!'});
-                }
-            else
-            {
+            if(message.toLowerCase() === currentWord.toLowerCase()){
+                let score_ = 100 * remainingTime/roundTime + 50;
+                player.score += parseInt(score_);
+                io.emit('receiveMessage', { nickname: player.nickname, message: '正確答案!'});
+                io.to(player.id).emit('correctAnswer');
+            }else{
                 io.emit('receiveMessage', { nickname: player.nickname, message });
             }
         }
@@ -57,22 +60,21 @@ io.on('connection', (socket) => {
         io.emit('updatePlayers', { players, currentPlayer: players.length > 0 ? players[currentPlayerIndex].id : null });
     });
 });
-
+let interval;
 function startNextRound() {
-    io.emit('broadcast', `currentWord ->${currentWord}`);
-
-    if (players.length <= 1) return;
+    if (players.length === 0) return;
     clearTimeout(timer);
+    clearInterval(interval);
     const currentPlayer = players[currentPlayerIndex];
     io.to(currentPlayer.id).emit('requestCurrentWord');
     io.emit('startRound', currentPlayer.id);
     io.emit('updatePlayers', { players, currentPlayer: currentPlayer.id });
-    io.to(currentPlayer.id).emit('receiveMessage',{nickname: '系統',message:`${currentPlayer.nickname}, 你的回合開始了!`});
-    let remainingTime = roundTime-1;
-    const interval = setInterval(
+    io.emit('broadcast',`${currentPlayer.nickname}的回合開始了!`);
+    remainingTime = roundTime;
+    interval = setInterval(
         ()=>{
             io.emit('updateTimer', remainingTime);
-            if(--remainingTime < 0) clearInterval(interval);
+            remainingTime--;
         }, 1000)
     timer = setTimeout(() => {
         currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
