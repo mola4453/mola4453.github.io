@@ -24,9 +24,12 @@
             <input type="text" id="nicknameInput" required>
             <button type="submit">開始遊戲!</button>
         </form>
-
+        
+        <div id="timer" style="display: none;">
+            時間: <span id="timerTime"></span>
+        </div>
         <canvas id="drawingCanvas" style="display: none;"></canvas>
-
+        
         <div id="controls" style="display: none;">
             <label for="colorPicker">顏色:</label>
             <input type="color" id="colorPicker" value="#000000">
@@ -42,10 +45,6 @@
                 <input type="text" id="chatInput" placeholder="輸入你的猜測" required>
                 <button type="submit">發送</button>
             </form>
-        </div>
-
-        <div id="timer" style="display: none;">
-            時間: <span id="timerTime"></span>
         </div>
     </div>
 
