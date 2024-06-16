@@ -5,34 +5,87 @@ body {
     height: 100vh;
     margin: 0;
     background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
 }
 
 #game-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+    position: relative;
 }
 
 #nicknameForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 20px;
 }
 
-#playerList {
+#nicknameForm label {
+    font-size: 1.2em;
     margin-bottom: 10px;
+}
+
+#nicknameForm input {
+    padding: 10px;
+    font-size: 1em;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#nicknameForm button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+}
+
+#nicknameForm button:hover {
+    background-color: #45a049;
+}
+
+#playerList {
     list-style-type: none;
     padding: 0;
+    width: 100%;
+    text-align: center;
+}
+
+#playerList li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
 }
 
 #drawingCanvas {
     border: 1px solid #000;
+    margin-top: 20px;
 }
 
 #controls {
+    display: flex;
+    justify-content: space-around;
     margin-top: 10px;
+    width: 100%;
+}
+
+#controls label {
+    margin-right: 10px;
 }
 
 #chatContainer {
-    margin-top: 10px;
+    margin-top: 20px;
+    width: 100%;
 }
 
 #chatBox {
@@ -40,50 +93,91 @@ body {
     height: 150px;
     border: 1px solid #000;
     overflow-y: scroll;
-    padding: 5px;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 #chatForm {
     display: flex;
-    margin-top: 5px;
+    margin-top: 10px;
 }
 
 #chatInput {
     flex: 1;
-    padding: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
 #chatForm button {
-    padding: 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 10px;
 }
+
+#chatForm button:hover {
+    background-color: #45a049;
+}
+
 #timer {
     font-size: 2em;
-    margin-top: 10px;
-}
-body {
-    display: flex;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
 }
 
 #scoreboard {
+    position: absolute;
+    top: 0px;
+    left: 0px; /* 確保記分板固定在左側 */
     width: 200px;
-    padding: 10px;
+    padding: 20px;
     background-color: #f9f9f9;
-    border-right: 1px solid #ddd;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #scoreboard h2 {
     text-align: center;
 }
-#playerList {
-    list-style-type: none;
-    padding: 0;
+
+#inputGuessWord {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-#playerList li {
-    padding: 5px 0;
-    border-bottom: 1px solid #ddd;
+#inputGuessWord label {
+    font-size: 1.2em;
+    margin-bottom: 10px;
 }
-#inputGuessWord
-{
-    width: 200px;
+
+#inputGuessWord input {
+    padding: 10px;
+    font-size: 1em;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+#inputGuessWord button {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+}
+
+#inputGuessWord button:hover {
+    background-color: #45a049;
 }

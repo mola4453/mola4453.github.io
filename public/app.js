@@ -16,6 +16,8 @@ const scoreBoard = document.getElementById('scoreboard');
 const inputGuessWord = document.getElementById('inputGuessWord');
 const guessWordInput = document.getElementById('guessWordInput');
 const submitWordButton = document.getElementById('submitWordButton');
+const clearCanvasButton = document.getElementById('clearCanvasButton');
+const eraserButton = document.getElementById('eraserButton'); 
 
 canvas.width = 800;
 canvas.height = 600;
@@ -23,6 +25,8 @@ canvas.height = 600;
 let drawing = false;
 let isMyTurn = false;
 let answered = false;
+let qSubmitd = false;
+let isEraser = false; 
 let socketId;
 let currentPlayerId;
 
@@ -32,16 +36,32 @@ socket.on('setSocketId',(socketId_)=>{socketId = socketId_;});
 
 socket.on('correctAnswer',()=>{answered = true;});
 
+socket.on('clearAllCanvas', ()=>{
+    clearCanvas();
+});
+
+eraserButton.addEventListener('click', () => {
+    isEraser = !isEraser; 
+    eraserButton.textContent = isEraser ? '使用畫筆' : '使用橡皮擦';
+});
+
+clearCanvasButton.addEventListener('click',()=>{
+    if(isMyTurn) socket.emit('clearCanvas');
+    else displayMessage('你的回合才能清除畫布!');
+});
+
 submitWordButton.addEventListener('click',()=>{
     let Word = guessWordInput.value;
     if(Word){
     socket.emit('setWord',Word);
     inputGuessWord.style.display = 'none';
     guessWordInput.value = '';
+    qSubmitd = true;
     }
 });
 
 nicknameForm.addEventListener('submit', (e) => {
+    console.log('nickname submit');
     e.preventDefault();
     const nickname = nicknameInput.value;
     if (nickname) {
@@ -84,12 +104,20 @@ canvas.addEventListener('mousemove', draw);
 
 function draw(event) {
     if (!drawing) return;
-    const x = event.clientX - canvas.offsetLeft;
-    const y = event.clientY - canvas.offsetTop;
+    if (!qSubmitd){
+        displayMessage('請先輸入你的題目，才可繪畫!');
+        return;
+    }
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    
 
     context.lineWidth = brushSize.value;
     context.lineCap = 'round';
     context.strokeStyle = colorPicker.value;
+    context.strokeStyle = isEraser ? '#FFFFFF' : colorPicker.value; 
+
 
     context.lineTo(x, y);
     context.stroke();
@@ -115,6 +143,7 @@ socket.on('startRound', (currentPlayerId_) => {
     currentPlayerId = currentPlayerId_;
     isMyTurn = currentPlayerId === socket.id;
     answered = false;
+    qSubmitd = false;
     if(isMyTurn) inputGuessWord.style.display = 'block';
     else inputGuessWord.style.display = 'none';
 });

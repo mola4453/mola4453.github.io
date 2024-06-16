@@ -7,43 +7,48 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="inputGuessWord" style="display: none;">
-        <label for="guessWordInput">請輸入你的題目:</label>
-        <input type="text" id="guessWordInput">
-        <button id="submitWordButton">提交</button>
-    </div>
-    
-    <div id="scoreboard" style = "display: none;">
+    <div id="scoreboard" style="display: none;">
         <h2>記分板</h2>
         <ul id="playerList"></ul>
     </div>
 
     <div id="game-container">
+        <div id="inputGuessWord" style="display: none;">
+            <label for="guessWordInput">請輸入你的題目:</label>
+            <input type="text" id="guessWordInput">
+            <button id="submitWordButton">提交</button>
+        </div>
+        
         <form id="nicknameForm">
             <label for="nicknameInput">輸入你的暱稱:</label>
             <input type="text" id="nicknameInput" required>
             <button type="submit">開始遊戲!</button>
         </form>
-   <!-- .     <ul id="playerList"></ul> -->
+
         <canvas id="drawingCanvas" style="display: none;"></canvas>
+
         <div id="controls" style="display: none;">
             <label for="colorPicker">顏色:</label>
             <input type="color" id="colorPicker" value="#000000">
             <label for="brushSize">筆刷大小:</label>
             <input type="range" id="brushSize" min="1" max="50" value="5">
-            <button onclick="clearCanvas()">清除畫布</button>
+            <button id = "clearCanvasButton">清除畫布</button>
+            <button id="eraserButton">橡皮擦</button> 
         </div>
+
         <div id="chatContainer" style="display: none;">
-            <div id="chatBox" style="height: 150px; overflow-y: scroll; border: 1px solid #000; padding: 5px;"></div>
+            <div id="chatBox"></div>
             <form id="chatForm">
                 <input type="text" id="chatInput" placeholder="輸入你的猜測" required>
                 <button type="submit">發送</button>
             </form>
         </div>
+
+        <div id="timer" style="display: none;">
+            時間: <span id="timerTime"></span>
+        </div>
     </div>
-    <div id="timer" style="display: none;">
-        時間: <span id = 'timerTime'></span> 
-    </div> 
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="./app.js"></script>
 </body>
