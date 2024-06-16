@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 
 let players = [];
 let currentPlayerIndex = 0;
-let roundTime = 62; // 每轮60秒
+let roundTime = 92; // 每輪幾秒
 let timer;
 let currentWord = 'banana';
 let inRound = false;
